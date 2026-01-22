@@ -126,14 +126,39 @@ document.addEventListener("DOMContentLoaded", () => {
       // Hint 1: You can use the `document.createElement()` method to create a new element.
       // Hint 2: You can use the `element.type`, `element.name`, and `element.value` properties to set the type, name, and value of an element.
       // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
-      // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
+    // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
 
+}
+
+
+function nextButtonHandler() {
+  // 1. Get all choice inputs
+  const choices = document.querySelectorAll('input[name="answer"]');
+
+  let selectedAnswer = null;
+
+  // 2. Find which one is checked
+  choices.forEach(choice => {
+    if (choice.checked) {
+      selectedAnswer = choice.value;
+    }
+  });
+
+  // 3. If no answer selected, do nothing
+  if (!selectedAnswer) return;
+
+  // 4. Check answer and move to next question
+  quiz.checkAnswer(selectedAnswer);
+  quiz.moveToNextQuestion();
+
+  // 5. Show next question (or end screen if finished)
+  if (!quiz.hasEnded()) {
+    showQuestion();
+  } else {
+    showResults();
   }
+}
 
-
-  
-  function nextButtonHandler () {
-    let selectedAnswer; // A variable to store the selected answer value
 
 
 
@@ -149,26 +174,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
       
     // 3. If an answer is selected (`selectedAnswer`), check if it is correct and move to the next question
-      // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
-      // Move to the next question by calling the quiz method `moveToNextQuestion()`.
-      // Show the next question by calling the function `showQuestion()`.
-  }  
+  // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
+  // Move to the next question by calling the quiz method `moveToNextQuestion()`.
+  // Show the next question by calling the function `showQuestion()`.
 
 
 
 
-  function showResults() {
+function showResults() {
+  // 1. Hide quiz view
+  quizView.style.display = "none";
 
-    // YOUR CODE HERE:
-    //
-    // 1. Hide the quiz view (div#quizView)
-    quizView.style.display = "none";
+  // 2. Show end view
+  endView.style.display = "block";
 
-    // 2. Show the end view (div#endView)
-    endView.style.display = "flex";
-    
-    // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
-  }
-  
-});
+  // 3. Display final score
+  resultContainer.innerText = quiz.correctAnswers;
+}
+
+}); 
+
+const INITIAL_TIME = quiz.timeLimit;
+
+function restartQuiz() {
+  // reset quiz state
+  quiz.currentQuestionIndex = 0;
+  quiz.score = 0;
+
+  // 1. Reset timeRemaining
+  quiz.timeRemaining = quiz.timeLimit;
+
+  // 2. Update timer text
+  timerText.innerText = quiz.timeRemaining;
+
+  // 3. Restart timer
+  clearInterval(timerInterval);
+  startTimer();
+
+  // show first question again
+  showQuestion();
+
+  // switch views
+  endView.style.display = "none";
+  quizView.style.display = "block";
+}
