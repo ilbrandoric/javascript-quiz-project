@@ -4,6 +4,8 @@ class Quiz {
     this.timeLimit = timeLimit;
     this.timeRemaining = timeRemaining;
     this.currentQuestionIndex = 0;
+    this.correctAnswers = 0;
+
   }
 
   getQuestion() {
@@ -22,10 +24,11 @@ class Quiz {
     }
   }
 
-  checkAnswer(answer) {
-    const currentQuestion = this.getQuestion();
-    return currentQuestion.answer === answer;
+checkAnswer(answer) {
+  if (this.getQuestion().answer === answer) {
+    this.correctAnswers++;
   }
+}
 
   hasEnded() {
     return this.currentQuestionIndex >= this.questions.length;
