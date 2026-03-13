@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add more questions here
     new Question(" What does www stand for in a website browser?", ["World Wide Web", "Web Wide World", "Wide World Web", "World Web Wide"], "World Wide Web", 4),
   ];
-  const quizDuration = 120; // 120 seconds (2 minutes)
+  const quizDuration = 260; // 260 seconds (4 minutes and 20 seconds)
   /************  QUIZ INSTANCE  ************/
   
   // Create a new Quiz instance object
@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const minutes = Math.floor(quiz.timeLimit / 60).toString().padStart(2, "0");
           const seconds = (quiz.timeLimit % 60).toString().padStart(2, "0");
           timeRemainingContainer.innerText = `${minutes}:${seconds}`;
-          //endView.style.display = "block";
-         // quizView.style.display = "none";
+          endView.style.display = "block";
+          quizView.style.display = "none";
           clearInterval(timer)
         }
         const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
@@ -124,7 +124,7 @@ resetBtn.addEventListener("click", () => {
     
     // 4. Create and display new radio input element with a label for each choice.
     // Loop through the current question `choices`.
-question.choices.forEach((element, index) => {
+  question.choices.forEach((element, index) => {
   const input = document.createElement("input");
   input.type = "radio";
   input.name = "choice";
